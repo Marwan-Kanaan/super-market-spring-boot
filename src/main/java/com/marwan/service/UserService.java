@@ -7,7 +7,6 @@ import com.marwan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     @Autowired
-    ProductService service ;
+    private ProductService service;
     @Autowired
     private UserRepository repo;
 
@@ -38,10 +37,10 @@ public class UserService {
             if (!repo.findAll().isEmpty()) {
                 return repo.findAll();
             } else {
-                throw new Exception();
+                return null;
             }
         } catch (Exception e) {
-            return null;
+           throw new RuntimeException(e.getMessage() , e.getCause());
         }
     }
 
@@ -74,6 +73,21 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    //not working
+//    public List<UserDTO> getAllUserDTO(){
+//        List<User> users = repo.findAll();
+//        List<UserDTO> dtos = new ArrayList<>();
+//        UserDTO userDTO1 = new UserDTO();
+//        for (User n : users) {
+//            userDTO1.setId(n.getId());
+//            userDTO1.setFirst_name(n.getFirst_name());
+//            userDTO1.setLast_name(n.getLast_name());
+//            userDTO1.setEmail(n.getEmail());
+//            dtos.add(userDTO1);
+//        }
+//        return dtos;
+//    }
+
 
     public void deleteUser(int id) {
         if (!repo.findAll().isEmpty()) {
@@ -102,7 +116,7 @@ public class UserService {
         return repo.save(user);
     }
 
-    public User deleteOrder(int id){
+    public User deleteOrder(int id) {
         User user = getUserById(id);
         user.getOrder().clear();
         return repo.save(user);
