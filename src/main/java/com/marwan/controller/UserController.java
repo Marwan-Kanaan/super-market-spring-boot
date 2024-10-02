@@ -1,8 +1,10 @@
 package com.marwan.controller;
 
+import com.marwan.dto.UserDTO;
 import com.marwan.model.User;
 import com.marwan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -28,19 +30,21 @@ public class UserController {
         }
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<User>> getAllUsers(){
+    @GetMapping("{id}")
+    public ResponseEntity<UserDTO> getAllUserById(@PathVariable int id){
         try {
-            return new ResponseEntity<>(service.getAllUsers() , HttpStatus.OK);
+            return new ResponseEntity<>(service.getUserDTO(id) , HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id){
-        return new ResponseEntity<>(service.getUserById(id) , HttpStatus.OK);
+    //not working
+    @GetMapping("/")
+    public ResponseEntity<List<UserDTO>> getAllUserDTO(){
+        return new ResponseEntity<>(service.getAllUserDTO() , HttpStatus.OK);
     }
+
 
     @DeleteMapping("/{id}")
     public void deleteUser (@PathVariable int id){
@@ -51,5 +55,6 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable int id , @RequestBody User user){
         return new ResponseEntity<>(service.updateUser(id, user) , HttpStatus.OK);
     }
+
 
 }
