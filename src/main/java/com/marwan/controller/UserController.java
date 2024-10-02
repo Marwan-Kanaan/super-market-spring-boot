@@ -28,9 +28,28 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users")
+    @GetMapping("")
     public ResponseEntity<List<User>> getAllUsers(){
-        return new ResponseEntity<>(service.getAllUsers() , HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(service.getAllUsers() , HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable int id){
+        return new ResponseEntity<>(service.getUserById(id) , HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser (@PathVariable int id){
+        service.deleteUser(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable int id , @RequestBody User user){
+        return new ResponseEntity<>(service.updateUser(id, user) , HttpStatus.OK);
     }
 
 }

@@ -5,6 +5,8 @@ import com.marwan.model.User;
 import com.marwan.repository.UserRepository;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +42,30 @@ public class UserService {
             return null ;
         }
     }
+
+    public User getUserById(int id){
+        try {
+            return repo.findById(id).orElse(new User());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void deleteUser(int id){
+       if (!repo.findAll().isEmpty()){
+           repo.deleteById(id);
+           System.out.println(HttpStatus.OK);
+       } else {
+           System.out.println(HttpStatus.NO_CONTENT);
+       }
+    }
+
+    public User updateUser(int id , User user){
+        User user1 = getUserById(id);
+        user1 = user ;
+        return repo.save(user1);
+    }
+
+
 
 }
