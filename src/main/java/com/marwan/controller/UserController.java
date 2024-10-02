@@ -4,9 +4,7 @@ import com.marwan.dto.UserDTO;
 import com.marwan.model.User;
 import com.marwan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +28,9 @@ public class UserController {
         }
     }
 
+    //DTO
     @GetMapping("{id}")
-    public ResponseEntity<UserDTO> getAllUserById(@PathVariable int id){
+    public ResponseEntity<UserDTO> getAllUserDTOById(@PathVariable int id){
         try {
             return new ResponseEntity<>(service.getUserDTO(id) , HttpStatus.OK);
         }catch (Exception e){
@@ -39,8 +38,8 @@ public class UserController {
         }
     }
 
-    //not working
-    @GetMapping("/")
+    //DTO
+    @GetMapping("")
     public ResponseEntity<List<UserDTO>> getAllUserDTO(){
         return new ResponseEntity<>(service.getAllUserDTO() , HttpStatus.OK);
     }
@@ -56,5 +55,24 @@ public class UserController {
         return new ResponseEntity<>(service.updateUser(id, user) , HttpStatus.OK);
     }
 
+    @GetMapping("/admin")
+    public ResponseEntity<List<User>> getALlUsers(){
+        return new ResponseEntity<>(service.getAllUsers() , HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable int id){
+        return new ResponseEntity<>(service.getUserById(id) , HttpStatus.OK);
+    }
+
+    @PutMapping("/order/{id}/{productId}")
+    public User order(@PathVariable int id , @PathVariable int productId){
+        return service.order(id , productId);
+    }
+
+    @DeleteMapping("/order/{id}")
+    public User deleteOrder(@PathVariable int id){
+        return service.deleteOrder(id);
+    }
 
 }
